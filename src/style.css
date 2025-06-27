@@ -1,0 +1,21 @@
+.tr-info {
+  margin-left: 2px;
+  background: darkblue;
+  border-radius: 4px;
+  padding: 2px 4px;
+  color: #fff;
+}
+
+.tr-info a:link {
+  color: #fff;
+}
+.tr-info a:active {
+  color: #fff;
+}
+.tr-info a:hover {
+  color: #fff;
+  background: darkblue;
+}
+.tr-info a:visited {
+  color: #fff;
+}

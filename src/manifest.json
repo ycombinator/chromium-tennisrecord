@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "TennisRecord Lookup",
+  "version": "0.1.0",
+  "description": "Lookup a player's TennisRecord stats",
+  "permissions": [
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": ["https://www.tennisrecord.com/*"],
+  "action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://leagues.ustanorcal.com/*"],
+      "js": ["content.js"],
+      "css": ["style.css"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}

@@ -4,7 +4,6 @@
   "version": "0.1.0",
   "description": "Lookup a player's TennisRecord stats",
   "permissions": [
-    "scripting",
     "storage"
   ],
   "host_permissions": ["https://www.tennisrecord.com/*"],

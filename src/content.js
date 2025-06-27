@@ -80,9 +80,9 @@ async function showInfo(target) {
 
     const id = matches[1]
     const name = target.innerText
-    const parts = name.split(", ")
-    const firstName = parts[1]
-    const lastName = parts[0]
+    const parts = name.split(",")
+    const firstName = parts[1].trim()
+    const lastName = parts[0].trim()
 
     const info = showLoading(target)
     const rating = await getRating(id, firstName, lastName)

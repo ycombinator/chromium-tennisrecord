@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "TennisRecord Lookup",
+  "name": "USTA NorCal Ad In",
   "version": "0.1.0",
-  "description": "Lookup a player's TennisRecord stats",
+  "description": "Enhance USTA NorCal UIs with information and functionality",
   "permissions": [
     "storage"
   ],

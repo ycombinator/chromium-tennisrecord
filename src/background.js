@@ -1,8 +1,12 @@
-chrome.runtime.onMessage.addListener(function (message, sender, senderResponse) {
-    const trURL = `https://www.tennisrecord.com/adult/profile.aspx?playername=${message.firstName}%20${message.lastName}`
-    fetch(trURL)
-        .then(res => res.text())
-        .then(body => senderResponse(body))
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+    switch (message.type) {
+        case "fetchPage":
+            console.log({message})
+            fetch(message.url)
+                .then(res => res.text())
+                .then(body => { console.log(body); sendResponse(body) })
+            break
+    }
     return true
 });
 

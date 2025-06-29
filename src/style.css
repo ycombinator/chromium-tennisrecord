@@ -1,9 +1,17 @@
 .tr-info {
+  font-size: small;
   margin-left: 2px;
   background: darkblue;
   border-radius: 4px;
-  padding: 2px 4px;
   color: #fff;
+
+  text-align: center;
+  vertical-align: middle;
+}
+
+.tr-info a {
+  padding: 0px;
+  margin: auto 4px auto 0px;
 }
 
 .tr-info a:link {
@@ -18,4 +26,13 @@
 }
 .tr-info a:visited {
   color: #fff;
+}
+
+.tr-info h4 {
+    color: #fff;
+    background-color: blueviolet;
+    font-size: smaller;
+    margin: auto 4px auto 0px;
+    padding: 0px;
+    display: unset;
 }

@@ -24,12 +24,12 @@ function showRating(info, trURL, rating) {
     info.appendChild(content)
 }
 
-function showLoading(target) {
+function showLoading(container) {
     const info = document.createElement('span');
     info.className = 'tr-info';
     info.innerText = "Loading..."
 
-    target.appendChild(info)
+    container.appendChild(info)
     return info
 }
 
@@ -45,7 +45,7 @@ async function showInfo(target) {
     }
     const id = matches[1]
 
-    const info = showLoading(target)
+    const info = showLoading(target.parentElement)
 
     let data = await chrome.storage.session.get("ratingCache");
     ratingCache = data.ratingCache || {}

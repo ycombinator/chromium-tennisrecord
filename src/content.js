@@ -105,6 +105,8 @@ async function showInfo(target) {
         ratingCache[id] = {trURL, rating }
         chrome.storage.session.set({ratingCache})
         showRating(info, trURL, rating)
+    } else {
+        showRating(info, "", "❔")
     }
 };
 

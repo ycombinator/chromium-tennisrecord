@@ -51,6 +51,7 @@ async function showInfo(target) {
     ratingCache = data.ratingCache || {}
 
     if (ratingCache.hasOwnProperty(id)) {
+        console.log(`returning rating for ${id} from cache`)
         const { trURL, rating } = ratingCache[id]
         if (trURL && rating) {
             showRating(info, trURL, rating)
@@ -63,7 +64,10 @@ async function showInfo(target) {
     data = await chrome.storage.session.get("ustaNorCalPlayerPageCache");
     ustaNorCalPlayerPageCache = data.ustaNorCalPlayerPageCache || {}
 
-    if (!ustaNorCalPlayerPageCache.hasOwnProperty(id)) {
+    if (ustaNorCalPlayerPageCache.hasOwnProperty(id)) {
+        console.log(`returning USTA NorCal player page body for ${id} from cache`)
+    } else {
+        console.log(`returning USTA NorCal player page body for ${id} from source`)
         const body = await fetchUSTANorCalPlayerPage(id)
         ustaNorCalPlayerPageCache[id] = body
         chrome.storage.session.set({ustaNorCalPlayerPageCache})
@@ -76,16 +80,19 @@ async function showInfo(target) {
     // estimated dynamic rating.
     // TODO: use cache
     data = await chrome.storage.session.get("tennisRecordPlayerPageCache");
-    tennisRecordPlayerPageCache = data.tennisRecordPlayerPageCache || {}
+    // tennisRecordPlayerPageCache = data.tennisRecordPlayerPageCache || {}
+    tennisRecordPlayerPageCache = {}
 
     let trURL, rating
     if (tennisRecordPlayerPageCache.hasOwnProperty(id)) {
+        console.log(`returning tennis record player page body for ${firstName} ${lastName} from cache`)
         const { url, body } = tennisRecordPlayerPageCache[id]
         const { trRating } = parseTennisRecordPlayerPage(body, firstName, lastName)
         trURL = url
         rating = trRating
     } else {
         for (let s = 1; s <= 20; s++) {
+            console.log(`returning tennis record player page body for ${firstName} ${lastName} (${s}) from source`)
             const { url, body } = await fetchTennisRecordPlayerPage(firstName, lastName, s)
             const { trLocation, trRating } = parseTennisRecordPlayerPage(body, firstName, lastName)
             if (location == trLocation) {
@@ -93,8 +100,8 @@ async function showInfo(target) {
                 trURL = url
                 rating = trRating
 
-                tennisRecordPlayerPageCache[id] = body
-                chrome.storage.session.set({tennisRecordPlayerPageCache})
+                // tennisRecordPlayerPageCache[id] = body
+                // chrome.storage.session.set({tennisRecordPlayerPageCache})
 
                 break
             }
@@ -182,7 +189,6 @@ async function fetchUSTANorCalPlayerPage(id) {
     const url = `https://leagues.ustanorcal.com/playermatches.asp?id=${id}`
     return new Promise((resolve, reject) => {
         chrome.runtime.sendMessage({type: "fetchPage", url}, body => {
-            // console.log("returning usta norcal player page body from source")
             // console.log(body)
             return resolve(body)
         })
@@ -193,7 +199,6 @@ async function fetchTennisRecordPlayerPage(firstName, lastName, s) {
     const url = `https://www.tennisrecord.com/adult/profile.aspx?playername=${firstName}%20${lastName}&s=${s}`
     return new Promise((resolve, reject) => {
         chrome.runtime.sendMessage({type: "fetchPage", url}, body => {
-            // console.log("returning tennis record player page body from source")
             // console.log(body)
             // tennisRecordPlayerPageCache[cacheKey] = body
             resolve({url, body})

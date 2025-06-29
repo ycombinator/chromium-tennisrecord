@@ -5,12 +5,23 @@ let ratingCache, ustaNorCalPlayerPageCache, tennisRecordPlayerPageCache
 function showRating(info, trURL, rating) {
     // console.log({info, trURL, rating})
     info.innerText = ""
-    const link = document.createElement('a')
-    link.href = trURL
-    link.target = '_blank'
-    link.innerText = rating
 
-    info.appendChild(link)
+    let content
+    if (trURL != "") {
+        content = document.createElement('a')
+        content.href = trURL
+        content.target = '_blank'
+        content.innerText = `${rating}`
+    } else {
+        content = document.createElement('span')
+        content.innerText = `${rating}`
+    }
+
+    const head = document.createElement('h4')
+    head.innerText = "TR"
+
+    info.appendChild(head)
+    info.appendChild(content)
 }
 
 function showLoading(target) {

@@ -1,6 +1,8 @@
 const dynamicRatingRegexp = /^[0-9].[0-9]{4}(\s+[A-Z])?$/
 
-let ratingCache, ustaNorCalPlayerPageCache, tennisRecordPlayerPageCache
+let ustaNorCalPlayerPageCache
+let tennisRecordRatingCache, tennisRecordPlayerPageCache
+let utrRecordRatingCache, utrRecordPlayerAPICache
 
 function showRating(info, trURL, rating) {
     // console.log({info, trURL, rating})
@@ -33,7 +35,7 @@ function showLoading(container) {
     return info
 }
 
-async function showInfo(target) {
+function showInfo(target) {
     const url = target.href;
     if (url == "") {
         return
@@ -45,14 +47,22 @@ async function showInfo(target) {
     }
     const id = matches[1]
 
-    const info = showLoading(target.parentElement)
+    const container = target.parentElement
+    // Show TR info
+    showTRInfo(container, id)
+    // Show UTR info
+    showUTRInfo(container, id)
+}
+
+async function showTRInfo(container, id) {
+    const info = showLoading(container)
 
     let data = await chrome.storage.session.get("ratingCache");
-    ratingCache = data.ratingCache || {}
+    tennisRecordRatingCache = data.ratingCache || {}
 
-    if (ratingCache.hasOwnProperty(id)) {
+    if (tennisRecordRatingCache.hasOwnProperty(id)) {
         console.log(`returning rating for ${id} from cache`)
-        const { trURL, rating } = ratingCache[id]
+        const { trURL, rating } = tennisRecordRatingCache[id]
         if (trURL && rating) {
             showRating(info, trURL, rating)
             return
@@ -109,13 +119,20 @@ async function showInfo(target) {
     }
 
     if (trURL && rating) {
-        ratingCache[id] = {trURL, rating }
-        chrome.storage.session.set({ratingCache})
+        tennisRecordRatingCache[id] = {trURL, rating }
+        chrome.storage.session.set({ratingCache: tennisRecordRatingCache})
         showRating(info, trURL, rating)
     } else {
         showRating(info, "", "❔")
     }
 };
+
+// TODO
+async function showUTRInfo(container, id) {
+    // const info = showLoading(container)
+
+    // https://api.utrsports.net/v2/search/players?query=shaunak+kashyap&top=40&skip=0&distance=25mi&pin=37.33874%2C-121.8852525&utrType=verified&utrTeamType=singles&showTennisContent=true&showPickleballContent=false&searchOrigin=searchPage
+}
 
 function parseUSTANorCalPlayerPage(body) {
     // console.log(body)
